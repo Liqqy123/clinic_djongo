@@ -1,0 +1,17 @@
+{% extends 'clinic/base.html' %}
+
+{% block title %}Запись на прием — Поликлиника{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Записаться на прием</h2>
+    {% if saved %}
+        <div class="success">Запись сохранена успешно.</div>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Записаться</button>
+    </form>
+</div>
+{% endblock %}
