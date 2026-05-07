@@ -1,0 +1,37 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Главная - Clinic{% endblock %}
+
+{% block content %}
+<div class="card" style="text-align: center; background: linear-gradient(135deg, #667eea20, #764ba220);">
+    <h2 style="border-left: none;">Добро пожаловать в Clinic</h2>
+    <p style="font-size: 1.1rem; color: #4b5563;">Система управления пациентами, рецептами и записями</p>
+</div>
+
+{% if user.is_authenticated and user.doctor_profile %}
+
+    <div class="grid-3" style="display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-bottom: 1.5rem;">
+        <div class="stat-card blue" style="background: linear-gradient(135deg, #2563eb, #1e40af); color: white; padding: 1.25rem; border-radius: 1rem; text-align: center;">
+            <div class="number" style="font-size: 2rem; font-weight: bold;">{{ total_patients|default:"0" }}</div>
+            <div class="label">Всего пациентов</div>
+        </div>
+        <div class="stat-card green" style="background: linear-gradient(135deg, #10b981, #047857); color: white; padding: 1.25rem; border-radius: 1rem; text-align: center;">
+            <div class="number" style="font-size: 2rem; font-weight: bold;">{{ active_patients|default:"0" }}</div>
+            <div class="label">Активных пациентов</div>
+        </div>
+        <div class="stat-card orange" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 1.25rem; border-radius: 1rem; text-align: center;">
+            <div class="number" style="font-size: 2rem; font-weight: bold;">{{ prescriptions_today|default:"0" }}</div>
+            <div class="label">Рецептов сегодня</div>
+        </div>
+    </div>
+{% else %}
+
+    <div class="card" style="margin-bottom: 1.5rem;">
+        <p style="font-size: 1rem;">Здесь вы можете записаться к врачу, посмотреть расписание и ознакомиться с информацией о клинике.</p>
+    </div>
+{% endif %}
+
+
+    </div>
+</div>
+{% endblock %}

@@ -1,23 +1,20 @@
-{% extends 'clinic/base.html' %}
+{% extends 'main/base.html' %}
 
-{% block title %}Расписание врачей — Поликлиника{% endblock %}
+{% block title %}Врачи и расписание - Clinic{% endblock %}
 
 {% block content %}
 <div class="card">
-    <h2>Врачи и расписание</h2>
+    <h2>👨‍⚕️ Врачи и расписание</h2>
     {% if doctors %}
         {% for doctor in doctors %}
             <div class="card">
                 <h3>{{ doctor.name }}</h3>
                 <p><strong>Специальность:</strong> {{ doctor.specialization }}</p>
-                <p>{{ doctor.bio }}</p>
+                <p>{{ doctor.bio|default:"Нет информации" }}</p>
                 {% if doctor.schedules.all %}
-                    <table>
+                    <table style="width: 100%; border-collapse: collapse;">
                         <thead>
-                            <tr>
-                                <th>День</th>
-                                <th>Время</th>
-                            </tr>
+                            <tr><th>День</th><th>Время</th></tr>
                         </thead>
                         <tbody>
                             {% for schedule in doctor.schedules.all %}
@@ -29,12 +26,12 @@
                         </tbody>
                     </table>
                 {% else %}
-                    <p class="empty">График пока не добавлен.</p>
+                    <p class="empty-state">График пока не добавлен.</p>
                 {% endif %}
             </div>
         {% endfor %}
     {% else %}
-        <p class="empty">Врачей пока нет. Добавьте через админку.</p>
+        <p class="empty-state">Врачей пока нет. Добавьте через админку.</p>
     {% endif %}
 </div>
 {% endblock %}

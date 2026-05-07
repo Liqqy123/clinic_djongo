@@ -1,0 +1,80 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Рецепты - Clinic{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>💊 Рецепты</h2>
+    <p>Управление рецептами пациентов</p>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; margin-bottom: 1rem;">
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <form method="get" style="display: flex; gap: 0.5rem;">
+                <input type="text" name="search" class="form-control" style="width: 250px;" placeholder="Поиск по имени пациента, ID или телефону..." value="{{ search_query }}">
+                <select name="status" class="form-control" style="width: auto;">
+                    <option value="">Все статусы</option>
+                    <option value="active" {% if status_filter == 'active' %}selected{% endif %}>Активен</option>
+                    <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>Завершён</option>
+                </select>
+                <button type="submit">Фильтр</button>
+            </form>
+        </div>
+        <button onclick="document.getElementById('newPrescriptionForm').style.display='block'" style="background: #10b981;">+ Новый рецепт</button>
+    </div>
+
+    <div class="grid-3" style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 1rem;margin-top: 10px">
+        <div class="stat-card blue" style="background: linear-gradient(135deg, #2563eb, #1e40af); color: white; padding: 1rem; border-radius: 1rem; text-align: center;">
+            <div class="number" style="font-size: 1.5rem; font-weight: bold;">{{ total_prescriptions }}</div>
+            <div>Всего рецептов</div>
+        </div>
+        <div class="stat-card green" style="background: linear-gradient(135deg, #10b981, #047857); color: white; padding: 0.75rem; border-radius: 1rem; text-align: center;">
+            <div class="number" style="font-size: 1.5rem; font-weight: bold;">{{ active_prescriptions }}</div>
+            <div>Активных</div>
+        </div>
+        <div class="stat-card orange" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 0.75rem; border-radius: 1rem; text-align: center;">
+            <div class="number" style="font-size: 1.5rem; font-weight: bold;">{{ completed_prescriptions }}</div>
+            <div>Завершённых</div>
+        </div>
+    </div>
+
+    {% if prescriptions %}
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr><th>ID</th><th>Пациент</th><th>Дата</th><th>Диагноз</th><th>Статус</th><th></th></tr>
+            </thead>
+            <tbody>
+                {% for rx in prescriptions %}
+                <tr>
+                    <td>{{ rx.prescription_id }}</td>
+                    <td>{{ rx.patient.full_name }}<br><small style="color:#6b7280;">ID: {{ rx.patient.patient_id }}</small></td>
+                    <td>{{ rx.issue_date|date:"Y-m-d" }}</td>
+                    <td>{{ rx.diagnosis|truncatewords:6 }}</td>
+                    <td><span class="badge {% if rx.status == 'active' %}badge-active{% else %}badge-completed{% endif %}">{% if rx.status == 'active' %}Активен{% else %}Завершён{% endif %}</span></td>
+                    <td><a href="#" class="btn-sm" style="background:#e5e7eb; padding:0.2rem 0.5rem; border-radius:0.375rem;">Просмотр</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="empty-state">Нет рецептов</p>
+    {% endif %}
+</div>
+
+<div id="newPrescriptionForm" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 1rem; box-shadow: 0 20px 40px rgba(0,0,0,0.2); width: 90%; max-width: 600px; max-height: 85vh; overflow-y: auto; z-index: 1000; padding: 1.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="margin: 0;">Новый рецепт</h3>
+        <button onclick="document.getElementById('newPrescriptionForm').style.display='none'" style="background: #ef4444; padding: 0.25rem 0.75rem;">✕</button>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group"><label>ID рецепта</label>{{ form.prescription_id }}</div>
+        <div class="form-group"><label>Пациент</label>{{ form.patient }}</div>
+        <div class="form-group"><label>Врач</label>{{ form.doctor }}</div>
+        <div class="form-group"><label>Диагноз</label>{{ form.diagnosis }}</div>
+        <div class="form-group"><label>Лекарства</label>{{ form.medications }}</div>
+        <div class="form-group"><label>Заметки</label>{{ form.notes }}</div>
+        <div class="form-group"><label>Статус</label>{{ form.status }}</div>
+        <button type="submit">Создать рецепт</button>
+    </form>
+</div>
+{% endblock %}

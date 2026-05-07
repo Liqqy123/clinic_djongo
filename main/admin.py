@@ -1,50 +1,41 @@
 from django.contrib import admin
-from .models import Doctor, DoctorSchedule, Appointment, MedicalRecord, Payment
-
+from .models import Doctor, Schedule, Patient, Prescription, Appointment, Payment
 
 @admin.register(Doctor)
 class DoctorAdmin(admin.ModelAdmin):
-    list_display = ('name', 'specialization', 'get_user', 'user')
-    search_fields = ('name', 'specialization', 'user__username')
-    list_filter = ('specialization',)
-    fieldsets = (
-        ('Учетная запись', {
-            'fields': ('user',),
-            'description': 'Привяжите существующего пользователя или оставьте пусто, если врач не будет входить в систему',
-        }),
-        ('Информация о враче', {
-            'fields': ('name', 'specialization', 'bio'),
-        }),
-    )
+    list_display = ['name', 'specialization']  # Убрали phone и email
+    search_fields = ['name', 'specialization']
+    list_filter = ['specialization']
 
-    def get_user(self, obj):
-        return obj.user.get_full_name() if obj.user else '—'
-    get_user.short_description = 'Пользователь'
+@admin.register(Schedule)
+class ScheduleAdmin(admin.ModelAdmin):
+    list_display = ['doctor', 'day_of_week', 'start_time', 'end_time']
+    list_filter = ['doctor', 'day_of_week']
+    search_fields = ['doctor__name']
 
+@admin.register(Patient)
+class PatientAdmin(admin.ModelAdmin):
+    list_display = ['patient_id', 'first_name', 'last_name', 'age', 'phone', 'is_active']
+    search_fields = ['patient_id', 'first_name', 'last_name', 'phone']
+    list_filter = ['is_active', 'gender']
+    readonly_fields = ['created_at']
 
-@admin.register(DoctorSchedule)
-class DoctorScheduleAdmin(admin.ModelAdmin):
-    list_display = ('doctor', 'day_of_week', 'start_time', 'end_time')
-    list_filter = ('day_of_week', 'doctor')
-
+@admin.register(Prescription)
+class PrescriptionAdmin(admin.ModelAdmin):
+    list_display = ['prescription_id', 'patient', 'doctor', 'issue_date', 'status']
+    search_fields = ['prescription_id', 'patient__first_name', 'patient__last_name']
+    list_filter = ['status', 'issue_date']
+    readonly_fields = ['issue_date']
 
 @admin.register(Appointment)
 class AppointmentAdmin(admin.ModelAdmin):
-    list_display = ('patient_name', 'doctor', 'date', 'time', 'status')
-    list_filter = ('status', 'doctor', 'date')
-    search_fields = ('patient_name', 'notes')
-    readonly_fields = ('created_at',)
-
-
-@admin.register(MedicalRecord)
-class MedicalRecordAdmin(admin.ModelAdmin):
-    list_display = ('patient_name', 'doctor', 'created_at')
-    search_fields = ('patient_name', 'description')
-    list_filter = ('doctor', 'created_at')
-
+    list_display = ['patient_name', 'doctor', 'date', 'time', 'status']
+    search_fields = ['patient_name', 'patient_phone']
+    list_filter = ['status', 'date', 'doctor']
+    readonly_fields = ['created_at']
 
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ('appointment', 'amount', 'method', 'paid_at')
-    list_filter = ('method', 'paid_at')
-    readonly_fields = ('paid_at',)
+    list_display = ['patient_name', 'amount', 'status', 'created_at']
+    search_fields = ['patient_name', 'patient_phone']
+    list_filter = ['status', 'created_at']

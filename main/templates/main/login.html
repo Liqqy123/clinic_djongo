@@ -1,6 +1,6 @@
-{% extends 'clinic/base.html' %}
+{% extends 'main/base.html' %}
 
-{% block title %}Вход — Поликлиника{% endblock %}
+{% block title %}Вход - Clinic{% endblock %}
 
 {% block content %}
 <div class="card" style="max-width: 500px; margin: 2rem auto;">
@@ -12,8 +12,16 @@
                 {{ form.non_field_errors }}
             </div>
         {% endif %}
-        
-        {{ form.as_p }}
+
+        <div class="form-group">
+            <label>Имя пользователя</label>
+            {{ form.username }}
+        </div>
+
+        <div class="form-group">
+            <label>Пароль</label>
+            {{ form.password }}
+        </div>
         
         <button type="submit">Войти</button>
     </form>

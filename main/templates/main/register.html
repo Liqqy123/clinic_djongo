@@ -1,6 +1,6 @@
-{% extends 'clinic/base.html' %}
+{% extends 'main/base.html' %}
 
-{% block title %}Регистрация — Поликлиника{% endblock %}
+{% block title %}Регистрация - Clinic{% endblock %}
 
 {% block content %}
 <div class="card" style="max-width: 500px; margin: 2rem auto;">
@@ -12,9 +12,17 @@
                 {{ form.non_field_errors }}
             </div>
         {% endif %}
-        
-        {{ form.as_p }}
-        
+
+        {% for field in form %}
+            <div class="form-group">
+                <label>{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <div class="errorlist">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
         <button type="submit">Зарегистрироваться</button>
     </form>
     <p style="text-align: center; margin-top: 1rem;">
