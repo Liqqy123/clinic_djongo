@@ -24,7 +24,7 @@ def register(request):
         login(request, user)
         return redirect('clinic_home')
 
-    return render(request, 'clinic/register.html', {'form': form, 'hide_nav': True})
+    return render(request, 'clinic/components/register.html', {'form': form, 'hide_nav': True})
 
 
 def patient_login(request):
@@ -43,7 +43,7 @@ def patient_login(request):
             return redirect('doctor_dashboard')
         return redirect('clinic_home')
 
-    return render(request, 'clinic/login.html', {'form': form, 'hide_nav': True})
+    return render(request, 'clinic/components/login.html', {'form': form, 'hide_nav': True})
 
 
 def patient_logout(request):
@@ -62,7 +62,7 @@ def home(request):
     records_count = MedicalRecord.objects.count()
     payments_count = Payment.objects.count()
 
-    return render(request, 'clinic/home.html', {
+    return render(request, 'clinic/components/home.html', {
         'doctors_count': doctors_count,
         'appointments_count': appointments_count,
         'records_count': records_count,
@@ -85,7 +85,7 @@ def doctor_dashboard(request):
     confirmed = appointments.filter(status='confirmed').count()
     cancelled = appointments.filter(status='cancelled').count()
 
-    return render(request, 'clinic/doctor_dashboard.html', {
+    return render(request, 'clinic/components/doctor_dashboard.html', {
         'doctor': doctor,
         'appointments': appointments,
         'total': total,
@@ -116,7 +116,7 @@ def doctor_update_appointment_status(request, appointment_id, status):
 @login_required(login_url='clinic_login')
 def doctor_list(request):
     doctors = Doctor.objects.prefetch_related('schedules').all()
-    return render(request, 'clinic/doctors.html', {'doctors': doctors})
+    return render(request, 'clinic/components/doctors.html', {'doctors': doctors})
 
 
 @login_required(login_url='clinic_login')
@@ -132,7 +132,7 @@ def book_appointment(request):
         saved = True
         appointment_form = AppointmentForm()
 
-    return render(request, 'clinic/appointments.html', {
+    return render(request, 'clinic/components/appointments.html', {
         'form': appointment_form,
         'saved': saved,
     })
@@ -145,7 +145,7 @@ def medical_records(request):
 
     search_form = RecordSearchForm(request.GET or None)
 
-    return render(request, 'clinic/records.html', {
+    return render(request, 'clinic/components/records.html', {
         'form': search_form,
     })
 
@@ -163,7 +163,7 @@ def payments(request):
         saved = True
         payment_form = PaymentForm()
 
-    return render(request, 'clinic/payments.html', {
+    return render(request, 'clinic/components/payments.html', {
         'form': payment_form,
         'saved': saved,
     })
