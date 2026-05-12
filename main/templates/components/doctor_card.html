@@ -1,0 +1,6 @@
+<div class="card">
+    <h3>{{ doctor.full_name }}</h3>
+    <p style="color: var(--text-muted);">{{ doctor.specialization }}</p>
+    <p style="margin-top: 12px;">{{ doctor.bio|truncatewords:20 }}</p>
+    <a href="{% url 'doctor_detail' doctor.id %}" class="btn" style="margin-top: 16px; display: inline-block;">Подробнее</a>
+</div>

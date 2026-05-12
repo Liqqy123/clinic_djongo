@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ doctor.full_name }}{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 40px 0;">
+    <div class="card" style="max-width: 900px; margin: 0 auto;">
+        <h1>{{ doctor.full_name }}</h1>
+        <div style="display: flex; gap: 16px; margin: 16px 0;">
+            <a href="#info">О враче</a> | <a href="#reviews">Отзывы</a>
+        </div>
+
+        <div id="info">
+            <h2>Информация о специалисте</h2>
+            <p><strong>Стаж работы:</strong> {{ doctor.experience }} лет.</p>
+            <p><strong>Учёная степень/Категория:</strong> {{ doctor.degree }}</p>
+            <p><strong>Специализация:</strong></p>
+            <ul>
+                {% for spec in doctor.specializations_list %}
+                <li>{{ spec }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div style="margin-top: 40px;">
+            <a href="#" class="btn">Записаться на приём</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

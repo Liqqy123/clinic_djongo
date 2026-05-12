@@ -1,0 +1,12 @@
+<div style="border-bottom: 1px solid #e2e8f0;">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 120px;">
+ <nav style="display: flex; gap: 28px;" >
+    <a href="{% url 'services' %}">Услуги</a>
+    <a href="{% url 'doctors_list' %}">Врачи</a>
+    <a href="{% url 'clinics' %}">Клиники</a>
+    <a href="{% url 'promotions' %}">Акции</a>
+    <a href="#">Ещё ▾</a>
+</nav>
+        {% include 'partials/search_form.html' %}
+    </div>
+</div>

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Врачи ЗдравТочка{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 40px 0;">
+    <h1>Врачи</h1>
+    <p style="margin-bottom: 24px;">Введите специализацию, имя или фамилию врача</p>
+
+    <form method="get" style="display: flex; gap: 16px; margin-bottom: 48px;">
+        <input type="text" name="search" placeholder="Поиск..." value="{{ request.GET.search }}" style="flex:1;">
+        <button type="submit" class="btn">Найти</button>
+    </form>
+
+    <div class="grid-4">
+        {% for doctor in doctors %}
+            {% include 'components/doctor_card.html' with doctor=doctor %}
+        {% empty %}
+            <p>Врачи не найдены</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

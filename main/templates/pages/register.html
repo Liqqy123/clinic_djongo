@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Регистрация - ЗдравТочка{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 600px; margin: 40px auto;">
+    <div class="card">
+        <h2>Регистрация пациента</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">Зарегистрироваться</button>
+        </form>
+        <p style="margin-top: 20px;">Уже есть аккаунт? <a href="{% url 'clinic_login' %}">Войти</a></p>
+    </div>
+</div>
+{% endblock %}
