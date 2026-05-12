@@ -1,12 +1,19 @@
-<div style="border-bottom: 1px solid #e2e8f0;">
-    <div class="container" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 120px;">
- <nav style="display: flex; gap: 28px;" >
-    <a href="{% url 'services' %}">Услуги</a>
-    <a href="{% url 'doctors_list' %}">Врачи</a>
-    <a href="{% url 'clinics' %}">Клиники</a>
-    <a href="{% url 'promotions' %}">Акции</a>
-    <a href="#">Ещё ▾</a>
-</nav>
-        {% include 'partials/search_form.html' %}
+{% load static %}
+<div style="background: #f8fafc; border-bottom: 1px solid #e2e8f0;padding: 10px 120px;">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; ">
+        <nav style="display: flex; gap: 32px; font-weight: 500;">
+            <a href="{% url 'home' %}" class="nav-link" style="text-decoration: none; color: #1e293b;">Главная</a>
+            <a href="{% url 'services' %}" class="nav-link" style="text-decoration: none; color: #1e293b;">Услуги</a>
+            <a href="{% url 'doctors_list' %}" class="nav-link" style="text-decoration: none; color: #1e293b;">Врачи</a>
+            <a href="{% url 'clinics' %}" class="nav-link" style="text-decoration: none; color: #1e293b;">Клиники</a>
+            <a href="{% url 'promotions' %}" class="nav-link" style="text-decoration: none; color: #1e293b;">Акции</a>
+            <a href="#" class="nav-link" style="text-decoration: none; color: #1e293b;">Ещё ▾</a>
+        </nav>
+
+        <form action="{% url 'doctors_list' %}" method="get" style="display: flex; gap: 8px;">
+            <input type="text" name="search" placeholder="Введите специализацию, имя или фамилию врача"
+                   style="min-width: 420px; padding: 8px 16px; border-radius: 40px; border: 1px solid #ccc;">
+            <button type="submit" style="background: #003087; color: white; border: none; padding: 8px 20px; border-radius: 40px; cursor: pointer;">Найти</button>
+        </form>
     </div>
 </div>

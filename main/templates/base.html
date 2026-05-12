@@ -239,6 +239,57 @@
 .nav-link.active::after {
     width: 100%;
 }
+/* Общие стили для кнопок входа/выхода/регистрации */
+.btn-login,
+.btn-logout,
+.btn-register {
+    padding: 8px 20px;
+    border-radius: 40px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* Кнопка "Вход" (синий фон) */
+.btn-login {
+    background-color: #003087;
+    color: white;
+    border: none;
+}
+.btn-login:hover {
+    background-color: #002266;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Кнопка "Выход" (синий фон) */
+.btn-logout {
+    background-color: #003087;
+    color: white;
+    border: none;
+}
+.btn-logout:hover {
+    background-color: #991b1b;   /* тёмно‑красный для выхода */
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Кнопка "Регистрация" (прозрачная с синей рамкой) */
+.btn-register {
+    background-color: transparent;
+    color: #003087;
+    border: 1px solid #003087;
+}
+.btn-register:hover {
+    background-color: #003087;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
     </style>
     {% block extra_css %}{% endblock %}
 </head>
