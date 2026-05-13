@@ -5,13 +5,16 @@
 {% block content %}
 <div class="container" style="max-width: 600px; margin: 40px auto;">
     <div class="card">
-        <h2>Регистрация пациента</h2>
+        <h2>Регистрация пользователя</h2>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn">Зарегистрироваться</button>
+            <button type="submit" class="btn">Создать пользователя</button>
         </form>
-        <p style="margin-top: 20px;">Уже есть аккаунт? <a href="{% url 'clinic_login' %}">Войти</a></p>
+        <p style="margin-top: 20px;">
+            Уже зарегистрированы?
+            <a href="{% url 'users:login' %}"><i>Войти</i></a>
+        </p>
     </div>
 </div>
 {% endblock %}

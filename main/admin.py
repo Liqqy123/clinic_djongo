@@ -3,9 +3,14 @@ from .models import Doctor, Schedule, Patient, Prescription, Appointment, Paymen
 
 @admin.register(Doctor)
 class DoctorAdmin(admin.ModelAdmin):
-    list_display = ['name', 'specialization']  # Убрали phone и email
-    search_fields = ['name', 'specialization']
-    list_filter = ['specialization']
+    list_display = ('name', 'specialization', 'experience', 'degree')
+    search_fields = ('name', 'specialization')
+    list_filter = ('specialization',)
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'specialization', 'bio', 'photo', 'experience', 'degree', 'clinic_address', 'specialization_list')
+        }),
+    )
 
 @admin.register(Schedule)
 class ScheduleAdmin(admin.ModelAdmin):

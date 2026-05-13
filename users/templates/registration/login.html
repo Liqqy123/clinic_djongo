@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Авторизация - ЗдравТочка{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 500px; margin: 40px auto;">
+    <div class="card">
+        <h2>Авторизация</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn" style="margin-top: 20px">Войти</button>
+        </form>
+        <p style="margin-top: 25px;">
+            Ещё не зарегистрированы?
+            <a href="{% url 'users:register' %}"><i>Регистрация</i></a>
+        </p>
+    </div>
+</div>
+{% endblock %}

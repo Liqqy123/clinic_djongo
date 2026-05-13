@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
-
+from django.conf import settings
+from django.conf.urls.static import static
 urlpatterns = [
     path('', views.home, name='home'),
     path('doctors/', views.doctors_list, name='doctors_list'),
@@ -9,8 +10,6 @@ urlpatterns = [
     path('promotions/', views.promotions, name='promotions'),
     path('services/', views.services, name='services'),
 
-    # Аутентификация
-    path('login/', views.clinic_login_view, name='clinic_login'),
-    path('register/', views.clinic_register, name='clinic_register'),
-    path('logout/', views.clinic_logout_view, name='clinic_logout'),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

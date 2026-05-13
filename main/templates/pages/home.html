@@ -24,7 +24,12 @@
 </div>
 
         <div style="display: flex; flex-wrap: wrap; gap: 20px;">
-            <a href="#" class="info-link">📅 Записаться на приём</a>
+            {% if user.is_authenticated %}
+    <a href="{% url 'appointments:list' %}"class="info-link">📅 Записаться на приём</a>
+{% else %}
+    <a href="{% url 'users:login' %}"class="info-link">📅 Войдите, чтобы записаться</a>
+{% endif %}
+
             <a href="#" class="info-link">📞 Горячая линия / Отзыв</a>
             <a href="#" class="info-link">🏠 Вызвать врача на дом</a>
             <a href="#" class="info-link">🚑 Скорая помощь</a>

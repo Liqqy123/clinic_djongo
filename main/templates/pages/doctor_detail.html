@@ -1,29 +1,49 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}{{ doctor.full_name }}{% endblock %}
+{% block title %}{{ doctor.name }}{% endblock %}
 
 {% block content %}
 <div class="container" style="padding: 40px 0;">
-    <div class="card" style="max-width: 900px; margin: 0 auto;">
-        <h1>{{ doctor.full_name }}</h1>
-        <div style="display: flex; gap: 16px; margin: 16px 0;">
-            <a href="#info">О враче</a> | <a href="#reviews">Отзывы</a>
+    <div class="doctor-detail" style="display: flex; gap: 40px; flex-wrap: wrap;">
+        <div style="flex: 0 0 250px; text-align: center;">
+            {% if doctor.photo %}
+                <img src="{{ doctor.photo.url }}" alt="{{ doctor.name }}" style="width: 100%; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+            {% else %}
+                <div style="background: #e2e8f0; border-radius: 16px; padding: 60px 20px; text-align: center; font-size: 80px;">👨‍⚕️</div>
+            {% endif %}
         </div>
+        <div style="flex: 1;">
+            <h1>{{ doctor.name }}</h1>
+            <p style="color: #4b5568;">{{ doctor.specialization }}</p>
+            <hr>
+            <h3>О враче</h3>
+            <p>{{ doctor.bio|default:"Нет информации" }}</p>
+            {% if doctor.experience %}
+                <p><strong>Стаж работы:</strong> {{ doctor.experience }} лет.</p>
+            {% endif %}
+            {% if doctor.clinic_address %}
+                <p><strong>Клиника:</strong> {{ doctor.clinic_address }}</p>
+            {% endif %}
+            {% if doctor.degree %}
+                <p><strong>Учёная степень/Категория:</strong> {{ doctor.degree }}</p>
+            {% endif %}
+            {% if doctor.specialization_list %}
+                <h4>Специализация:</h4>
+                <ul>
+                    {% for line in doctor.specialization_list|linebreaksbr %}
+                        <li>{{ line }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
 
-        <div id="info">
-            <h2>Информация о специалисте</h2>
-            <p><strong>Стаж работы:</strong> {{ doctor.experience }} лет.</p>
-            <p><strong>Учёная степень/Категория:</strong> {{ doctor.degree }}</p>
-            <p><strong>Специализация:</strong></p>
-            <ul>
-                {% for spec in doctor.specializations_list %}
-                <li>{{ spec }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div style="margin-top: 40px;">
-            <a href="#" class="btn">Записаться на приём</a>
+            {% if user.is_authenticated and user.doctor_profile %}
+                <!-- Если текущий пользователь – врач, показываем ссылку на его записи -->
+                <a href="{% url 'doctor_dashboard' %}" class="btn" style="margin-top: 20px;">📋 Мои записи на приём</a>
+            {% else %}
+                <!-- Обычный пользователь (пациент) может записаться -->
+                <a href="{% url 'appointments:create' %}?doctor={{ doctor.id }}" class="btn" style="margin-top: 20px;">📅 Записаться на приём</a>
+            {% endif %}
         </div>
     </div>
 </div>

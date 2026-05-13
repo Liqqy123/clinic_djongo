@@ -21,12 +21,6 @@
         }
 
 
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-
         :root {
             --primary: #003087;
             --primary-dark: #002266;
@@ -103,7 +97,7 @@
             .grid-4 {
                 gap: 16px;
             }
-            /* Стили для навигации */
+
 .nav-menu {
     display: flex;
     gap: 28px;
@@ -122,7 +116,6 @@
     color: #003087;
 }
 
-/* Подчёркивание при наведении */
 .nav-link:hover::after {
     content: '';
     position: absolute;
@@ -134,7 +127,6 @@
     border-radius: 2px;
 }
 
-/* Активная ссылка (текущая страница) */
 .nav-link.active {
     color: #003087;
     font-weight: 600;
@@ -150,7 +142,6 @@
     background-color: #003087;
     border-radius: 2px;
 }
-
 
 .nav-link::after {
     content: '';
@@ -172,7 +163,7 @@
     width: 100%;
 }
         }
-/* Стили для навигации */
+
 .nav-menu {
     display: flex;
     gap: 28px;
@@ -191,7 +182,6 @@
     color: #003087;
 }
 
-/* Подчёркивание при наведении */
 .nav-link:hover::after {
     content: '';
     position: absolute;
@@ -203,7 +193,6 @@
     border-radius: 2px;
 }
 
-/* Активная ссылка (текущая страница) */
 .nav-link.active {
     color: #003087;
     font-weight: 600;
@@ -239,7 +228,7 @@
 .nav-link.active::after {
     width: 100%;
 }
-/* Общие стили для кнопок входа/выхода/регистрации */
+
 .btn-login,
 .btn-logout,
 .btn-register {
@@ -254,7 +243,6 @@
     cursor: pointer;
 }
 
-/* Кнопка "Вход" (синий фон) */
 .btn-login {
     background-color: #003087;
     color: white;
@@ -266,19 +254,18 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-/* Кнопка "Выход" (синий фон) */
 .btn-logout {
     background-color: #003087;
     color: white;
     border: none;
 }
 .btn-logout:hover {
-    background-color: #991b1b;   /* тёмно‑красный для выхода */
+    background-color: #991b1b;
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-/* Кнопка "Регистрация" (прозрачная с синей рамкой) */
+
 .btn-register {
     background-color: transparent;
     color: #003087;
@@ -289,6 +276,38 @@
     color: white;
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.badge-cancelled {
+    background: #fee2e2;
+    color: #991b1b;
+}
+.badge-new { background: #fef3c7; color: #92400e; }
+.badge-process { background: #dbeafe; color: #1e40af; }
+.badge-done { background: #dcfce7; color: #166534; }
+
+.btn-cancel {
+    background-color: #dc2626;
+    color: white;
+    padding: 6px 16px;
+    border-radius: 40px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+.btn-cancel:hover {
+    background-color: #b91c1c;
+}
+.user-greeting {
+    text-align: right;
+    line-height: 1.3;
+    margin-right: 16px;
+}
+.user-name {
+    font-weight: 500;
+    font-size: 14px;
+}
+.user-role {
+    font-size: 12px;
+    color: #003087;
 }
     </style>
     {% block extra_css %}{% endblock %}

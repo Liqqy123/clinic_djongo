@@ -1,11 +1,13 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
+from django.conf import settings
+
 class Doctor(models.Model):
     user = models.OneToOneField(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='doctor_profile',
         null=True,
@@ -14,9 +16,35 @@ class Doctor(models.Model):
     )
     name = models.CharField(max_length=200, verbose_name='Имя')
     specialization = models.CharField(max_length=200, verbose_name='Специализация')
-    bio = models.TextField(blank=True, verbose_name='Биография')
     phone = models.CharField(max_length=20, blank=True, default='', verbose_name='Телефон')
     email = models.EmailField(blank=True, default='', verbose_name='Email')
+    bio = models.TextField(blank=True, verbose_name='Биография')
+    photo = models.ImageField(
+        upload_to='doctors_photos/',
+        blank=True,
+        null=True,
+        verbose_name='Фото'
+    )
+    experience = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        verbose_name='Стаж (лет)'
+    )
+    degree = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name='Учёная степень/категория'
+    )
+    clinic_address = models.CharField(
+        max_length=300,
+        blank=True,
+        verbose_name='Клиника/адрес'
+    )
+    specialization_list = models.TextField(
+        blank=True,
+        help_text='Специализация (каждый пункт с новой строки)',
+        verbose_name='Специализация (подробно)'
+    )
 
     class Meta:
         verbose_name = 'Врач'
@@ -24,7 +52,6 @@ class Doctor(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.specialization})"
-
 
 class Schedule(models.Model):
     DAYS = [
@@ -61,7 +88,7 @@ class Patient(models.Model):
     ]
 
     user = models.OneToOneField(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='patient_profile',
         null=True,

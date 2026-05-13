@@ -1,22 +1,31 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Врачи ЗдравТочка{% endblock %}
 
 {% block content %}
 <div class="container" style="padding: 40px 0;">
     <h1>Врачи</h1>
-    <p style="margin-bottom: 24px;">Введите специализацию, имя или фамилию врача</p>
-
-    <form method="get" style="display: flex; gap: 16px; margin-bottom: 48px;">
-        <input type="text" name="search" placeholder="Поиск..." value="{{ request.GET.search }}" style="flex:1;">
-        <button type="submit" class="btn">Найти</button>
+    <form method="get" style="margin-bottom: 30px;margin-top: 15px">
+        <input type="text" name="search" placeholder="Введите специализацию, имя или фамилию" value="{{ request.GET.search }}">
+        <button type="submit" style="margin-top: 15px">Найти</button>
     </form>
-
-    <div class="grid-4">
+    <div class="doctors-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px;">
         {% for doctor in doctors %}
-            {% include 'components/doctor_card.html' with doctor=doctor %}
+            <div class="doctor-card card" style="display: flex; gap: 16px; align-items: center;">
+                {% if doctor.photo %}
+                    <img src="{{ doctor.photo.url }}" alt="{{ doctor.name }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;">
+                {% else %}
+                    <div style="width: 100px; height: 100px; background: #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px;">👨‍⚕️</div>
+                {% endif %}
+                <div>
+                    <h3 style="margin: 0;">{{ doctor.name }}</h3>
+                    <p style="color: #4b5563;">{{ doctor.specialization }}</p>
+                    <a href="{% url 'doctor_detail' doctor.id %}" class="btn-sm" style="background: #e5e7eb; padding: 4px 12px; border-radius: 20px;">Подробнее</a>
+                </div>
+            </div>
         {% empty %}
-            <p>Врачи не найдены</p>
+            <p>Врачи не найдены.</p>
         {% endfor %}
     </div>
 </div>
