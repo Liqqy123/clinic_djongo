@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main','users','appointments',
+    'main','users',
 ]
 AUTH_USER_MODEL = 'users.CustomUser'
 FAKER_LOCALE = None

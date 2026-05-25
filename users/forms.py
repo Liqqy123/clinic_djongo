@@ -4,15 +4,25 @@ from django.core.exceptions import ValidationError
 import re
 from .models import CustomUser
 
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from .models import CustomUser
+
 class RegisterForm(UserCreationForm):
-    full_name = forms.CharField(label='ФИО', max_length=150)
-    phone = forms.CharField(label='Телефон', max_length=16)
-    email = forms.EmailField(label='Email')
+    phone = forms.CharField(max_length=16, required=True)
+    role = forms.ChoiceField(choices=CustomUser.ROLE_CHOICES, initial='patient', widget=forms.HiddenInput)
 
     class Meta:
         model = CustomUser
-        fields = ('username', 'full_name', 'phone', 'email', 'password1', 'password2')
-        labels = {'username': 'Логин'}
+        fields = ('username', 'first_name', 'last_name', 'email', 'phone', 'password1', 'password2')
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.role = 'patient' 
+        user.phone = self.cleaned_data['phone']
+        if commit:
+            user.save()
+        return user
 
     def clean_username(self):
         username = self.cleaned_data.get('username')

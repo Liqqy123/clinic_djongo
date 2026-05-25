@@ -1,32 +1,86 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Врачи ЗдравТочка{% endblock %}
+{% block title %}Врачи МЕДСИ{% endblock %}
 
 {% block content %}
 <div class="container" style="padding: 40px 0;">
     <h1>Врачи</h1>
-    <form method="get" style="margin-bottom: 30px;margin-top: 15px">
-        <input type="text" name="search" placeholder="Введите специализацию, имя или фамилию" value="{{ request.GET.search }}">
-        <button type="submit" style="margin-top: 15px">Найти</button>
+
+    <!-- Форма поиска, фильтрации и сортировки -->
+    <form method="get" style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 30px; align-items: flex-end;">
+        <div style="flex: 1;">
+            <label>Поиск</label>
+            <input type="text" name="search" value="{{ search_query }}" placeholder="Имя, специализация..." style="width: 100%;">
+        </div>
+        <div>
+            <label>Специализация</label>
+            <select name="specialization">
+                <option value="">Все</option>
+                {% for spec in specializations %}
+                    <option value="{{ spec.id }}" {% if selected_specialization|stringformat:"s" == spec.id|stringformat:"s" %}selected{% endif %}>
+                        {{ spec.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label>Сортировка</label>
+            <select name="sort">
+                <option value="name" {% if selected_sort == 'name' %}selected{% endif %}>По имени (А-Я)</option>
+                <option value="-name" {% if selected_sort == '-name' %}selected{% endif %}>По имени (Я-А)</option>
+                <option value="experience" {% if selected_sort == 'experience' %}selected{% endif %}>По стажу (возрастание)</option>
+                <option value="-experience" {% if selected_sort == '-experience' %}selected{% endif %}>По стажу (убывание)</option>
+                <option value="created_at" {% if selected_sort == 'created_at' %}selected{% endif %}>Сначала новые</option>
+                <option value="-created_at" {% if selected_sort == '-created_at' %}selected{% endif %}>Сначала старые</option>
+            </select>
+        </div>
+        <div>
+            <button type="submit">Применить</button>
+            <a href="{% url 'doctors_list' %}" style="margin-left: 10px;">Сбросить</a>
+        </div>
     </form>
+
+    <!-- Список врачей -->
     <div class="doctors-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px;">
         {% for doctor in doctors %}
-            <div class="doctor-card card" style="display: flex; gap: 16px; align-items: center;">
-                {% if doctor.photo %}
-                    <img src="{{ doctor.photo.url }}" alt="{{ doctor.name }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;">
-                {% else %}
-                    <div style="width: 100px; height: 100px; background: #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px;">👨‍⚕️</div>
-                {% endif %}
-                <div>
-                    <h3 style="margin: 0;">{{ doctor.name }}</h3>
-                    <p style="color: #4b5563;">{{ doctor.specialization }}</p>
-                    <a href="{% url 'doctor_detail' doctor.id %}" class="btn-sm" style="background: #e5e7eb; padding: 4px 12px; border-radius: 20px;">Подробнее</a>
+            <div class="doctor-card card">
+                <div style="display: flex; gap: 16px; align-items: center;">
+                    {% if doctor.photo %}
+                        <img src="{{ doctor.photo.url }}" alt="{{ doctor.name }}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%;">
+                    {% else %}
+                        <div style="width: 80px; height: 80px; background: #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px;">👨‍⚕️</div>
+                    {% endif %}
+                    <div>
+                        <h3 style="margin: 0;">{{ doctor.name }}</h3>
+                        <p style="color: #4b5568; margin: 5px 0;">{{ doctor.specialization.name|default:"Специализация не указана" }}</p>
+                        {% if doctor.experience %}
+                            <p style="font-size: 14px;">Стаж: {{ doctor.experience }} лет</p>
+                        {% endif %}
+                        <a href="{% url 'doctor_detail' doctor.id %}" class="btn-sm" style="background: #e5e7eb; padding: 4px 12px; border-radius: 20px;">Подробнее</a>
+                    </div>
                 </div>
             </div>
         {% empty %}
             <p>Врачи не найдены.</p>
         {% endfor %}
     </div>
+
+    <!-- Пагинация -->
+    {% if doctors.has_other_pages %}
+    <div class="pagination" style="margin-top: 30px; text-align: center;">
+        {% if doctors.has_previous %}
+            <a href="?page=1{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">« Первая</a>
+            <a href="?page={{ doctors.previous_page_number }}{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">Предыдущая</a>
+        {% endif %}
+
+        <span>Страница {{ doctors.number }} из {{ doctors.paginator.num_pages }}</span>
+
+        {% if doctors.has_next %}
+            <a href="?page={{ doctors.next_page_number }}{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">Следующая</a>
+            <a href="?page={{ doctors.paginator.num_pages }}{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">Последняя »</a>
+        {% endif %}
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

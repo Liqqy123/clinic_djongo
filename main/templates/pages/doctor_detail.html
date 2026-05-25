@@ -37,11 +37,9 @@
                 </ul>
             {% endif %}
 
-            {% if user.is_authenticated and user.doctor_profile %}
-                <!-- Если текущий пользователь – врач, показываем ссылку на его записи -->
+            {% if is_this_doctor %}
                 <a href="{% url 'doctor_dashboard' %}" class="btn" style="margin-top: 20px;">📋 Мои записи на приём</a>
             {% else %}
-                <!-- Обычный пользователь (пациент) может записаться -->
                 <a href="{% url 'appointments:create' %}?doctor={{ doctor.id }}" class="btn" style="margin-top: 20px;">📅 Записаться на приём</a>
             {% endif %}
         </div>
