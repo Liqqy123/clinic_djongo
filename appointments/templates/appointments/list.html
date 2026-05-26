@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Мои записи на приём{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 40px 0;">
+    <h2>Мои записи на приём</h2>
+    <div style="margin-bottom: 20px;margin-top: 20px;">
+        <a href="{% url 'appointments:create' %}" class="btn" >➕ Записаться на приём</a>
+    </div>
+
+    {% if appointments %}
+        {% for appointment in appointments %}
+            <div class="card" style="margin-bottom: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: start;">
+                    <div>
+                        <h3>{{ appointment.doctor.name }}</h3>
+                        <p><strong>Специализация:</strong> {{ appointment.doctor.specialization.name }}</p>
+                        <p><strong>Дата:</strong> {{ appointment.date|date:"d.m.Y" }}</p>
+                        <p><strong>Время:</strong> {{ appointment.time|time:"H:i" }}</p>
+                        <p><strong>Статус:</strong>
+                            <span class="badge
+                                {% if appointment.status == 'pending' %}badge-pending
+                                {% elif appointment.status == 'confirmed' %}badge-confirmed
+                                {% elif appointment.status == 'cancelled' %}badge-cancelled
+                                {% else %}badge-completed{% endif %}">
+                                {{ appointment.get_status_display }}
+                            </span>
+                        </p>
+                    </div>
+                    {% if appointment.status != 'cancelled' and appointment.status != 'completed' %}
+                        <a href="{% url 'appointments:cancel' appointment.pk %}" class="btn btn-cancel"
+                           onclick="return confirm('Вы уверены, что хотите отменить запись?')">Отменить</a>
+                    {% endif %}
+                </div>
+                <p><small>Создана: {{ appointment.created_at|date:"d.m.Y H:i" }}</small></p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="card">
+            <p>У вас пока нет записей на приём. <a href="{% url 'appointments:create' %}">Записаться сейчас</a></p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
